@@ -1,3 +1,17 @@
+/*
+ * RCompletionToolTip.java
+ *
+ * Copyright (C) 2009-15 by RStudio, Inc.
+ *
+ * Unless you have received this program directly from RStudio pursuant
+ * to the terms of a commercial license agreement with RStudio, then
+ * this program is licensed to you under the terms of version 3 of the
+ * GNU Affero General Public License. This program is distributed WITHOUT
+ * ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING THOSE OF NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Please refer to the
+ * AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
+ *
+ */
 package org.rstudio.studio.client.workbench.views.source.editors.text.r;
 
 import org.rstudio.core.client.Rectangle;
@@ -6,7 +20,6 @@ import org.rstudio.studio.client.workbench.views.source.editors.text.DocDisplay.
 import org.rstudio.studio.client.workbench.views.source.editors.text.ace.Position;
 import org.rstudio.studio.client.workbench.views.source.editors.text.ace.Range;
 import org.rstudio.studio.client.workbench.views.source.editors.text.cpp.CppCompletionToolTip;
-
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NativeEvent;
@@ -26,7 +39,6 @@ public class RCompletionToolTip extends CppCompletionToolTip
 
       // set the max width
       setMaxWidth(Window.getClientWidth() - 200);
-      
    }
    
    public boolean previewKeyDown(NativeEvent event)
@@ -72,6 +84,14 @@ public class RCompletionToolTip extends CppCompletionToolTip
    {
       setCursorAnchor();
       resolvePositionAndShow(signature, docDisplay_.getCursorBounds());
+   }
+   
+   public void resolvePositionAndShow(String signature, Range activeRange)
+   {
+      setAnchor(activeRange.getStart(), activeRange.getEnd());
+      resolvePositionAndShow(
+            signature,
+            docDisplay_.getPositionBounds(activeRange.getStart()));
    }
    
    private void resolvePositionRelativeTo(final int left,
@@ -179,5 +199,5 @@ public class RCompletionToolTip extends CppCompletionToolTip
    private final DocDisplay docDisplay_;
    private HandlerRegistration nativePreviewReg_;
    private AnchoredSelection anchor_;
-
+   
 }
